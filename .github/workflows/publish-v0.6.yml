@@ -33,8 +33,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh release view v0.6.0 >/dev/null 2>&1 && \
-            gh release upload v0.6.0 AURU-Pocket-Core-v0.6.0.apk --clobber || \
+          REPO="Aurucoin/AI_MUZG"
+          if gh release view v0.6.0 --repo "$REPO" >/dev/null 2>&1; then
+            gh release upload v0.6.0 AURU-Pocket-Core-v0.6.0.apk --repo "$REPO" --clobber
+          else
             gh release create v0.6.0 AURU-Pocket-Core-v0.6.0.apk \
+              --repo "$REPO" \
               --title "AURU Pocket Core v0.6.0" \
               --notes "Visual upgrade test: custom AURU launcher identity, stable ai.auru.pocketcore package, same v0.4+ signing lineage."
+          fi
