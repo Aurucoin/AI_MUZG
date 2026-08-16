@@ -1,7 +1,7 @@
 {
-  "versionCode": 5,
-  "versionName": "0.5.0",
-  "apkUrl": "https://github.com/Aurucoin/AI_MUZG/releases/download/v0.5.0/AURU-Pocket-Core-v0.5.0.apk",
-  "sha256": "1891779cc242e4b73d7c2ecdecde0285f011542154c9114a3851639de852831b",
+  "versionCode": 6,
+  "versionName": "0.6.0",
+  "apkUrl": "https://github.com/Aurucoin/AI_MUZG/releases/download/v0.6.0/AURU-Pocket-Core-v0.6.0.apk",
+  "sha256": "529ee399ba561aa938694a511d301f0735378716bf74a97732e3af5ce03c4913",
   "certificateSha256": "03:A4:12:2B:34:5B:5A:E5:C6:38:79:CB:EC:17:0A:18:FB:9F:61:3C:68:E9:30:2C:32:51:04:FC:6C:BA:A7:5C"
 }
