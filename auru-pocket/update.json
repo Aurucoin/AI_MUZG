@@ -1,6 +1,7 @@
 {
   "versionCode": 3,
   "versionName": "0.3.0",
-  "apkUrl": "https://github.com/Aurucoin/AI_MUZG/releases/latest",
-  "notes": "AURU Pocket Core update channel initialized."
+  "apkUrl": "https://github.com/Aurucoin/AI_MUZG/releases/download/v0.3.0/AURU-Pocket-Core-v0.3.0-BASE.apk",
+  "sha256": "7e39a0197a4b3bc2987043beead867ad87dbde5ab86f8c6d0918e012f8a9611f",
+  "certificateSha256": "7A:E8:54:0E:E7:1F:33:BD:2B:06:14:A2:D2:29:7A:5F:EE:16:33:1F:84:B5:31:2F:9F:30:E8:D3:FF:A1:2A:4A"
 }
