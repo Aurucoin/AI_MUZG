@@ -1,0 +1,40 @@
+name: Publish AURU Pocket Core v0.6.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-v0.6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download verified signed APK artifact
+        env:
+          SOURCE_ZIP: "https://sdmntprpolandcentral.oaiusercontent.com/files/00000000-07c4-820a-adfe-145d7cddeeaf/raw?se=2026-08-16T12%3A13%3A55Z&sp=r&sv=2026-02-06&sr=b&scid=33b1e17a-3907-5ec9-a22d-f5b7b39427a8&skoid=76024c37-11e2-4c92-aa07-7e519fbe2d0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-16T08%3A50%3A03Z&ske=2026-08-17T08%3A50%3A03Z&sks=b&skv=2026-02-06&sig=orcWYJ0Znn4HDzfBUJgIxM5giZyG%2Bc2QIcEfhc2t9c4%3D"
+          EXPECTED_SHA256: "529ee399ba561aa938694a511d301f0735378716bf74a97732e3af5ce03c4913"
+        run: |
+          set -euo pipefail
+          curl -fL "$SOURCE_ZIP" -o /tmp/auru-v060.zip
+          mkdir -p /tmp/auru-v060
+          unzip -q /tmp/auru-v060.zip -d /tmp/auru-v060
+          APK="$(find /tmp/auru-v060 -type f -name '*.apk' | head -1)"
+          test -n "$APK"
+          cp "$APK" "$GITHUB_WORKSPACE/AURU-Pocket-Core-v0.6.0.apk"
+          echo "$EXPECTED_SHA256  $GITHUB_WORKSPACE/AURU-Pocket-Core-v0.6.0.apk" | sha256sum -c -
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release view v0.6.0 >/dev/null 2>&1 && \
+            gh release upload v0.6.0 AURU-Pocket-Core-v0.6.0.apk --clobber || \
+            gh release create v0.6.0 AURU-Pocket-Core-v0.6.0.apk \
+              --title "AURU Pocket Core v0.6.0" \
+              --notes "Visual upgrade test: custom AURU launcher identity, stable ai.auru.pocketcore package, same v0.4+ signing lineage."
