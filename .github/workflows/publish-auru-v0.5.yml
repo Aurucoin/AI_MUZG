@@ -1,0 +1,58 @@
+name: Publish AURU Pocket Core v0.5.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-auru-v0.5.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download verified signed AURU v0.5 artifact
+        run: |
+          set -euo pipefail
+          curl -fL 'https://sdmntpritalynorth.oaiusercontent.com/files/00000000-945c-8246-9956-5ef4fa43b54f/raw?se=2026-08-16T11%3A39%3A55Z&sp=r&sv=2026-02-06&sr=b&scid=8c015fc4-8338-5d99-ac1a-20435e95b90a&skoid=76024c37-11e2-4c92-aa07-7e519fbe2d0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-16T08%3A50%3A07Z&ske=2026-08-17T08%3A50%3A07Z&sks=b&skv=2026-02-06&sig=eX7aBQhmnFIRHBpNyB/BEj1PD3JEyLMyTauf6z3SCpA%3D' -o /tmp/auru-v05.zip
+          mkdir -p /tmp/auru-v05
+          unzip -q /tmp/auru-v05.zip -d /tmp/auru-v05
+          APK="$(find /tmp/auru-v05 -type f -name '*.apk' | head -1)"
+          test -n "$APK"
+          echo '1891779cc242e4b73d7c2ecdecde0285f011542154c9114a3851639de852831b  '"$APK" | sha256sum -c -
+          cp "$APK" /tmp/AURU-Pocket-Core-v0.5.0.apk
+
+      - name: Publish GitHub Release v0.5.0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v0.5.0 >/dev/null 2>&1; then
+            gh release upload v0.5.0 /tmp/AURU-Pocket-Core-v0.5.0.apk --clobber
+          else
+            gh release create v0.5.0 /tmp/AURU-Pocket-Core-v0.5.0.apk \
+              --title 'AURU Pocket Core v0.5.0' \
+              --notes 'Updater end-to-end test release. Stable package ai.auru.pocketcore; persistent memory/workspace; prominent future update badge.'
+          fi
+
+      - name: Publish update channel
+        run: |
+          set -euo pipefail
+          cat > auru-pocket/update.json <<'EOF'
+          {
+            "versionCode": 5,
+            "versionName": "0.5.0",
+            "apkUrl": "https://github.com/Aurucoin/AI_MUZG/releases/download/v0.5.0/AURU-Pocket-Core-v0.5.0.apk",
+            "sha256": "1891779cc242e4b73d7c2ecdecde0285f011542154c9114a3851639de852831b",
+            "certificateSha256": "03:A4:12:2B:34:5B:5A:E5:C6:38:79:CB:EC:17:0A:18:FB:9F:61:3C:68:E9:30:2C:32:51:04:FC:6C:BA:A7:5C"
+          }
+          EOF
+          git config user.name 'AURU Release Bot'
+          git config user.email 'auru-release@users.noreply.github.com'
+          git add auru-pocket/update.json
+          git commit -m 'release: publish AURU Pocket Core v0.5.0 update channel' || exit 0
+          git push
