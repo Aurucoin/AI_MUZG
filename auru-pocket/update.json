@@ -1,7 +1,8 @@
 {
-  "versionCode": 6,
-  "versionName": "0.6.0",
-  "apkUrl": "https://github.com/Aurucoin/AI_MUZG/releases/download/v0.6.0/AURU-Pocket-Core-v0.6.0.apk",
-  "sha256": "529ee399ba561aa938694a511d301f0735378716bf74a97732e3af5ce03c4913",
-  "certificateSha256": "03:A4:12:2B:34:5B:5A:E5:C6:38:79:CB:EC:17:0A:18:FB:9F:61:3C:68:E9:30:2C:32:51:04:FC:6C:BA:A7:5C"
+  "versionCode": 7,
+  "versionName": "0.7.0",
+  "apkUrl": "https://github.com/Aurucoin/AI_MUZG/releases/download/v0.7.0/AURU-Pocket-Core-v0.7.0.apk",
+  "sha256": "90e8cff6211d8fcfa173070abe351ee76e9955737c6258d99b7c6db8f07df9de",
+  "certificateSha256": "03:A4:12:2B:34:5B:5A:E5:C6:38:79:CB:EC:17:0A:18:FB:9F:61:3C:68:E9:30:2C:32:51:04:FC:6C:BA:A7:5C",
+  "notes": "Updater v2: AURU pobiera i weryfikuje APK wewnątrz aplikacji, bez otwierania GitHuba lub przeglądarki."
 }
